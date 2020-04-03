@@ -37,7 +37,8 @@
     </view>
 
     <!-- 回到顶部 -->
-    <view class="goTop icon-top"></view>
+    <!-- 这里不能用 v-show 有问题  小程序里使用v-if -->
+    <view class="goTop icon-top" v-if="isShow" @click="goTop"></view>
   </view>
 </template>
 
@@ -52,7 +53,9 @@
 
         swiperArr:[], // 轮播图数据
         navArr:[], // 导航栏数据
-        floorsArr:[] // 楼层数据
+        floorsArr:[], // 楼层数据
+
+        isShow:false // 返回顶部按钮的初始状态,默认是false 不显示
       }
     },
 
@@ -101,6 +104,12 @@
          })
 
          this.floorsArr = res
+       },
+
+       // 返回顶部的执行函数---------------------------------------------------------------
+       goTop(){
+         // 调用API--> pageScrollTo  并传入参数  让卷起的距离为0，即可 返回顶部
+         uni.pageScrollTo({scrollTop:0})
        }
 
     },
@@ -122,6 +131,18 @@
 
       // 3.请求完毕后，调用 API 关闭 下拉效果 ---> stopPullDownRefresh()
       uni.stopPullDownRefresh()
+    },
+
+    // 页面滚动的时候,获取页面的滚动距离--------------------------------------------------------
+    // onPageScroll()--->生命周期函数
+    onPageScroll(e){
+      // 1.通过事件对象获取滚动的距离
+      // console.log(e.scrollTop) // scrollTop:随时获取页面的滚动距离，onPageScroll 提供的属性
+      if (e.scrollTop>200) {
+        this.isShow = true
+      }else {
+        this.isShow = false
+      }
     }
 
   }
