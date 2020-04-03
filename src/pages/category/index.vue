@@ -4,139 +4,36 @@
     <search />
     <!-- 分类 -->
     <view class="category">
-      <!-- 顶级分类 -->
+
+      <!-- 一级分类 -->
       <view class="sup">
         <scroll-view scroll-y>
-          <text class="active">大家电</text>
-          <text>热门推荐</text>
-          <text>海外购</text>
-          <text>苏宁房产</text>
-          <text>手机相机</text>
-          <text>电脑办公</text>
-          <text>厨卫电器</text>
-          <text>食品酒水</text>
-          <text>居家生活</text>
-          <text>厨房电器</text>
+          <text 
+          v-for="(item,index) in list" 
+          :key="item.cat_id"
+          :class="{'active':(index==ac_index?true:false)}"
+          @tap="change(index)">{{item.cat_name}}</text>
         </scroll-view>
       </view>
-      <!-- 子级分类 -->
+
+
+      <!-- 二级分类 -->
       <view class="sub">
         <scroll-view scroll-y>
           <!-- 封面图 -->
           <image src="http://static.botue.com/ugo/uploads/category.png" class="thumb"></image>
-          <view class="children">
-            <view class="title">电视</view>
-            <!-- 品牌 -->
+          <view class="children" v-for="item in list[ac_index].children" :key="item.cat_id">
+            <view class="title">{{item.cat_name}}</view>
+
+
+            <!-- 三级分类  品牌 -->
             <view class="brands">
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_1.jpg"></image>
-                <text>曲面电视</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_2.jpg"></image>
-                <text>海信</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_3.jpg"></image>
-                <text>创维</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_4.jpg"></image>
-                <text>夏普</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_5.jpg"></image>
-                <text>TCL</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_6.jpg"></image>
-                <text>PPTV</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_7.jpg"></image>
-                <text>小米</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_8.jpg"></image>
-                <text>长虹</text>
+              <navigator url="/pages/list/index" v-for="one in item.children" :key="one.cat_id">
+                <image :src="one.cat_icon"></image>
+                <text>{{one.cat_name}}</text>
               </navigator>
             </view>
-          </view>
-          <view class="children">
-            <view class="title">电视</view>
-            <!-- 品牌 -->
-            <view class="brands">
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_1.jpg"></image>
-                <text>曲面电视</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_2.jpg"></image>
-                <text>海信</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_3.jpg"></image>
-                <text>创维</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_4.jpg"></image>
-                <text>夏普</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_5.jpg"></image>
-                <text>TCL</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_6.jpg"></image>
-                <text>PPTV</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_7.jpg"></image>
-                <text>小米</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_8.jpg"></image>
-                <text>长虹</text>
-              </navigator>
-            </view>
-          </view>
-          <view class="children">
-            <view class="title">电视</view>
-            <!-- 品牌 -->
-            <view class="brands">
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_1.jpg"></image>
-                <text>曲面电视</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_2.jpg"></image>
-                <text>海信</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_3.jpg"></image>
-                <text>创维</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_4.jpg"></image>
-                <text>夏普</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_5.jpg"></image>
-                <text>TCL</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_6.jpg"></image>
-                <text>PPTV</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_7.jpg"></image>
-                <text>小米</text>
-              </navigator>
-              <navigator url="/pages/list/index">
-                <image src="http://static.botue.com/ugo/uploads/brand_8.jpg"></image>
-                <text>长虹</text>
-              </navigator>
-            </view>
+
           </view>
         </scroll-view>
       </view>
@@ -148,9 +45,43 @@
   import search from '@/components/search';
 
   export default {
+    data(){
+      return {
+        list:[], // 页面的初始化数据
+
+        ac_index:0 // 数据列表 展示的初始化下标
+      }
+    },
     
     components: {
       search
+    },
+
+    methods: {
+      // 获取分类页面的商品数据-------------------------------------------------------------
+      async getList(){
+        // this 是Vue的一个实例化对象
+        const res = await this.request({
+          url:"/api/public/v1/categories"
+        })
+
+        // console.log(res)
+        this.list = res
+      },
+
+      // 当点击 一级分类 的时候，获取对应的索引值------------------------------------
+      // 将遍历时的 下标值 作为函数的参数传入，就可知道点击的是 具体的哪个数据
+      change(index){
+        // console.log(index)
+
+        // 将传入的索引值，赋值给默认的 初始化页面做展示时的 下标数据  做点击后的新数据展示
+        this.ac_index = index
+      }
+    },
+
+    // onLoad() 生命周期函数中 加载渲染 页面的首屏数据信息
+    onLoad(){
+      this.getList()
     }
   }
 </script>
