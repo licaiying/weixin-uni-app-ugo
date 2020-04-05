@@ -1,43 +1,29 @@
 <template>
   <!-- 搜索 -->
   <div class="search" :class="{focused: focused}">
+
     <!-- 搜索框 -->
     <div class="input-wrap" @click="goSearch">
-      <input type="text" :placeholder="placeholder">
+      <input type="text" :placeholder="placeholder" @input="input" v-model="words" @confirm="goPageTo">
       <span class="cancle" @click.stop="cancleSearch">取消</span>
     </div>
+
     <!-- 搜索结果 -->
     <div class="content">
-      <div class="title">搜索历史<span class="clear"></span></div>
+      <div class="title">搜索历史<span class="clear"  @tap="clear"></span></div>
       <div class="history">
-        <navigator url="/pages/list/index">小米</navigator>
-        <navigator url="/pages/list/index">智能电视</navigator>
-        <navigator url="/pages/list/index">小米空气净化器</navigator>
-        <navigator url="/pages/list/index">西门子洗碗机</navigator>
-        <navigator url="/pages/list/index">华为手机</navigator>
-        <navigator url="/pages/list/index">苹果</navigator>
-        <navigator url="/pages/list/index">锤子</navigator>
+        <navigator 
+        :url="'/pages/list/index?query='+item"
+        v-for="(item,index) in history"
+        :key="index">{{item}}</navigator>
       </div>
-      <!-- 结果 -->
-      <scroll-view scroll-y class="result">
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
-        <navigator url="/pages/goods/index">小米</navigator>
+
+      <!-- 查询的建议列表数据结果 -->
+      <scroll-view scroll-y class="result" v-if="list.length">
+        <navigator 
+        :url="'/pages/goods/index?id='+item.goods_id"
+        v-for="item in list" 
+        :key="item.goods_id">{{item.goods_name}}</navigator>
       </scroll-view>
     </div>
   </div>
@@ -48,7 +34,12 @@
     data () {
       return {
         focused: false,
-        placeholder: ''
+        placeholder: '',
+        words:'', // 查询字段
+        list:[], // 查询出来的介意列表
+        
+        // 读取本地数据,调用API，有可能为空(没有数据)
+        history:uni.getStorageSync("history") || []
       }
     },
     methods: {
@@ -75,7 +66,46 @@
 
         // 显示tabBar
         uni.showTabBar();
-      }
+      },
+
+      // 输入框的输入事件------------------------------------------------------
+      async input(){
+        // console.log(this.words)
+
+        const res = await this.request({
+          url:'/api/public/v1/goods/qsearch',
+          data:{
+            query:this.words
+          }
+        })
+        // console.log(res)
+
+        this.list = res
+      },
+
+      // 去到查询结果的详情页面 ------------------------------------------------
+      // 点击 手机的回车键发送按钮，进行页面的跳转
+      goPageTo(){
+        // 1.将搜索的数据，存储到本地
+        this.history.push(this.words)
+
+        // 2.优化，数组去重
+        this.history = [...new Set(this.history)]
+
+        // 3.存入本地
+        uni.setStorageSync("history",this.history)
+
+        // 4.去新的页面 调用API  wx.navigateTo
+        uni.navigateTo({
+          url:'/pages/list/index?query='+ this.words
+        })
+      },
+
+      // 清除历史数据，和展示的数据列表-------------------------------------
+      clear(){
+        uni.removeStorageSync("history")
+        this.history = []
+      } 
     }
   }
 </script>

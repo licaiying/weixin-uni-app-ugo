@@ -6,76 +6,89 @@
       <text>销量</text>
       <text>价格</text>
     </view>
+
     <!-- 商品列表 -->
-    <scroll-view class="goods" scroll-y>
-      <view class="item" @click="goDetail">
+    <scroll-view class="goods" scroll-y @scrolltolower="pageAgain">
+      <view class="item" @click="goDetail" v-for="item in list" :key="item.goods_id">
         <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
+        <image class="pic" :src="item.goods_small_logo"></image>
         <!-- 商品信息 -->
         <view class="meta">
-          <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
+          <view class="name">{{item.goods_name}}</view>
           <view class="price">
-            <text>￥</text>1399<text>.00</text>
-          </view>
-        </view>
-      </view>
-      <view class="item" @click="goDetail">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_2.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">卡奇莱德汽车车载空气净化器负离子除甲醛PM2.5除烟异味车用氧吧双涡轮出风（红色）</view>
-          <view class="price">
-            <text>￥</text>168<text>.00</text>
-          </view>
-        </view>
-      </view>
-      <view class="item" @click="goDetail">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_3.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">沿途（yantu）车载充电器车充一拖二usb转接口手机智能头多功能汽车点烟器</view>
-          <view class="price">
-            <text>￥</text>168<text>.00</text>
-          </view>
-        </view>
-      </view>
-      <view class="item" @click="goDetail">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_4.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">车载冰箱7.5L 冷暖两用汽车冰箱半导体12V迷你电冰箱升级款</view>
-          <view class="price">
-            <text>￥</text>168<text>.00</text>
-          </view>
-        </view>
-      </view>
-      <view class="item" @click="goDetail">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_5.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">神行者电子狗 神行者L70电子狗测速 测速雷达 流动测速 多种警示路段提醒</view>
-          <view class="price">
-            <text>￥</text>168<text>.00</text>
+            <text>￥</text>{{item.goods_price}}<text>.00</text>
           </view>
         </view>
       </view>
     </scroll-view>
+
   </view>
 </template>
 
 <script>
   export default {
+    data(){
+      return {
+        list:[], // 根据关键字，搜索到的数据的列表信息
+        pagenum:1, // 默认显示第一页的数据
+        query:'', // 查询的字段名称
+        flag:'请求完成' // 页面触底时的判断依据
+      }
+    },
 
     methods: {
       goDetail () {
         uni.navigateTo({
           url: '/pages/goods/index'
         })
+      },
+
+      // 执行函数，获取 搜索字段 的详细列表信息---------------------------------------------------
+      // 加载的时候，执行请求
+      async getList(query){
+        const res = await this.request({
+          url:"/api/public/v1/goods/search",
+          data:{
+            query, // 查询关键词
+            pagenum:this.pagenum, // 当前是第几页
+            pagesize:5 // 每页显示的数据条数
+          }
+        })
+
+        // console.log(res)
+        // this.list = res.goods
+
+        // 优化，将新获得的数据与原先的数据做一个连接操作，而不是直接覆盖原先的数据
+        this.list = this.list.concat(res.goods)
+      },
+
+      // 页面到达底部时，重新调用函数，发请求，获取下一页的数据信息
+      async pageAgain(){
+        // 页面触底时，先判断上一次的请求，是否已完成
+        // 若没有完成，则不去发下一次的请求
+        if(this.flag == "请求开始"){
+          return 
+        }
+
+        // 请求数据前
+        this.flag = "请求开始"
+
+        // 获取到新的数据后，页码++
+        this.pagenum++
+        await this.getList(this.query)
+
+        // 请求结束后
+        this.flag = "请求完成"
       }
+
+    },
+
+    onLoad(opt){
+      // console.log(opt) // {query: "大米"}
+      this.query = opt.query
+
+      // 调用函数，展示数据
+      this.getList(this.query)
     }
   }
 </script>

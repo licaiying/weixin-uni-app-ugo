@@ -2,6 +2,11 @@
   <view :style="{height: pageHeight, overflow: 'hidden'}">
     <search @search="disableScroll" />
 
+    <!-- wxml页面中，若想跳转到tabBar页面，必须使用一个属性：open-type="switchTab -->
+     <!-- <navigator url="/pages/cart/index" open-type="switchTab">
+         去购物车
+     </navigator> -->
+
     <!-- 焦点图 -->
     <swiper class="banner" indicator-dots indicator-color="rgba(255, 255, 255, 0.6)" indicator-active-color="#fff">
       <swiper-item v-for="item in swiperArr" :key="item.goods_id">

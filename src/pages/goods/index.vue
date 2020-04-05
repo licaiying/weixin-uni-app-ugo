@@ -44,6 +44,7 @@
 
     methods: {
       goCart () {
+        // 转跳到tabBar页面
         uni.switchTab({
           url: '/pages/cart/index'
         })

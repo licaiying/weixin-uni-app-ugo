@@ -9,7 +9,7 @@ export default function(Vue){
     // 3.opts:是以后在调用这个函数发请求的时候，传入的参数，里面有url data method等，直接解构出来，方便配置url
     
     Vue.prototype.request = async function(opts){
-      const { url } = opts
+      const { url,data } = opts
 
       // 发请求前，设置 加载中 的动画效果
       // 调用 封装好的 API showLoading()
@@ -23,7 +23,8 @@ export default function(Vue){
       // 用解构的方法，直接接收后台返回的数据
 
       const [err,res] = await uni.request({
-          url: baseURL + url
+          url: baseURL + url,
+          data
       })
 
       // 当获取到数据后，停止 加载 的动画效果
