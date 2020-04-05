@@ -1,27 +1,16 @@
 <template>
-  <view class="wrapper">
+<!-- v-if="data":如果有数据，就做展示，否则，就不做展示 -->
+  <view class="wrapper" v-if="data">
     <!-- 商品图片 -->
     <swiper class="pics" indicator-dots indicator-color="rgba(255, 255, 255, 0.6)" indicator-active-color="#fff">
-      <swiper-item>
-        <image src="http://static.botue.com/ugo/uploads/detail_1.jpg"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="http://static.botue.com/ugo/uploads/detail_2.jpg"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="http://static.botue.com/ugo/uploads/detail_3.jpg"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="http://static.botue.com/ugo/uploads/detail_4.jpg"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="http://static.botue.com/ugo/uploads/detail_5.jpg"></image>
+      <swiper-item v-for="item in data.pics" :key="item.pics_id">
+        <image :src="item.pics_big"></image>
       </swiper-item>
     </swiper>
     <!-- 基本信息 -->
     <view class="meta">
-      <view class="price">￥199</view>
-      <view class="name">初语秋冬新款毛衣女 套头宽松针织衫简约插肩袖上衣</view>
+      <view class="price">￥{{data.goods_price}}</view>
+      <view class="name">{{data.goods_name}}</view>
       <view class="shipment">快递: 免运费</view>
       <text class="collect icon-star">收藏</text>
     </view>
@@ -41,6 +30,11 @@
 
 <script>
   export default {
+    data(){
+      return {
+        data:null
+      }
+    },
 
     methods: {
       goCart () {
@@ -53,8 +47,29 @@
         uni.navigateTo({
           url: '/pages/order/index'
         })
+      },
+
+      // 根据商品的id，发请求，获取商品的详细信息，并在页面中做展示
+      async getData(id){
+        const res = await this.request({
+          url:"/api/public/v1/goods/detail",
+          data:{
+            goods_id:id
+          }
+        })
+
+        // console.log(res)
+        this.data = res
       }
+    },
+
+    onLoad(opts){
+      // console.log(opts) // {id: "129"}
+
+      // 调用函数，渲染页面
+      this.getData(opts.id)
     }
+
   }
 </script>
 

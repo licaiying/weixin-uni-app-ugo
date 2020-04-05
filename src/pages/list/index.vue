@@ -9,7 +9,7 @@
 
     <!-- 商品列表 -->
     <scroll-view class="goods" scroll-y @scrolltolower="pageAgain">
-      <view class="item" @click="goDetail" v-for="item in list" :key="item.goods_id">
+      <view class="item" @click="goDetail(item.goods_id)" v-for="item in list" :key="item.goods_id">
         <!-- 商品图片 -->
         <image class="pic" :src="item.goods_small_logo"></image>
         <!-- 商品信息 -->
@@ -37,9 +37,10 @@
     },
 
     methods: {
-      goDetail () {
+      goDetail (id) {
+        // JS:跳转一个非tabBar的页面
         uni.navigateTo({
-          url: '/pages/goods/index'
+          url: '/pages/goods/index?id='+id
         })
       },
 
