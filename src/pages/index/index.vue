@@ -124,6 +124,10 @@
       this.getSwiperData()
       this.getNavData()
       this.getFloorsData()
+
+      // 默认允许分享、转发
+      // 一般不这样做，让用户自定义开启转发功能
+      // uni.showShareMenu()
     },
 
     // 监听用户下拉动作的执行函数-------------------------------------------
@@ -147,6 +151,16 @@
         this.isShow = true
       }else {
         this.isShow = false
+      }
+    },
+
+    // 用户自定义的 开启转发 功能
+    // 是一个生命周期函数
+    onShareAppMessage(){
+      return {
+        title:"欢迎使用UGO！",
+        imageUrl:"http://www.999zx.cn/adm_file/fck/images/2018/4/Image/20184386447866.jpg",
+        path:"/pages/index/index"
       }
     }
 
