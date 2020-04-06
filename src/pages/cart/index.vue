@@ -61,7 +61,7 @@
       <view class="total">
         合计: <text>￥</text><label>{{sum}}</label><text>.00</text>
       </view>
-      <view class="pay">结算({{ckList.length}})</view>
+      <view class="pay" @tap="goPay">结算({{ckList.length}})</view>
     </view>
 
 
@@ -174,6 +174,34 @@
             this.addr.detailAddr = res.provinceName + res.cityName + res.countyName + res.detailInfo
           }
         })
+      },
+
+      // 结算功能-----------------------------------------------------------------
+      goPay(){
+        // 判断
+        // 1. 是否有收获地址
+        if (!this.addr) {
+          uni.showToast({title:"没有收获地址",icon:"none"})
+          return 
+        }
+
+        // 2. 是否有选中的商品
+        if (!this.ckList.length) {
+          uni.showToast({title:"还没有选择商品哦",icon:"none"})
+          return 
+        }
+
+        // 3. 是否现在是登录状态,获取token
+        if (!uni.getStorageSync("token")) {
+          uni.showToast({title:"还没有登录呢，转跳到登录页面",icon:"none"})
+
+          // 若没有登录，让用户跳转到登录页面
+          // 登录页面是非tabBar页面
+          uni.navigateTo({
+            url:"/pages/auth/index"
+          })
+        }
+ 
       }
 
     },
