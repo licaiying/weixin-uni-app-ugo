@@ -78,7 +78,8 @@
           goods_name:this.data.goods_name,
           goods_small_logo:this.data.goods_small_logo,
           goods_numb:1, // 商品的数量，默认为1
-          goods_price:this.data.goods_price
+          goods_price:this.data.goods_price,
+          goods_buy:true // true：表示要购买的状态
         }
 
         // 3. 添加到购物车，注意，判断商品是否重复

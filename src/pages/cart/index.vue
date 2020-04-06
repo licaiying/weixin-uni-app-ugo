@@ -1,5 +1,6 @@
 <template>
   <view class="wrapper">
+
     <!-- 收货信息 -->
     <view class="shipment">
       <view class="dt">收货人: </view>
@@ -10,76 +11,41 @@
       <view class="dt">收货地址:</view>
       <view class="dd">广东省广州市天河区一珠吉</view>
     </view>
+
+
     <!-- 购物车 -->
     <view class="carts">
       <view class="item">
         <!-- 店铺名称 -->
         <view class="shopname">优购生活馆</view>
-        <view class="goods">
+
+        <view class="goods" v-for="(item,index) in list" :key="item.goods_id">
           <!-- 商品图片 -->
-          <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
+          <image class="pic" :src="item.goods_small_logo"></image>
           <!-- 商品信息 -->
           <view class="meta">
-            <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
+            <view class="name">{{item.goods_name}}</view>
             <view class="price">
-              <text>￥</text>1399<text>.00</text>
+              <text>￥</text>{{item.goods_price}}<text>.00</text>
             </view>
+
             <!-- 加减 -->
             <view class="amount">
-              <text class="reduce">-</text>
-              <input type="number" value="1" class="number">
-              <text class="plus">+</text>
+              <text class="reduce" @tap="change(-1,index)">-</text>
+              <input type="number" :value="item.goods_numb" class="number">
+              <text class="plus" @tap="change(1,index)">+</text>
             </view>
           </view>
           <!-- 选框 -->
           <view class="checkbox">
-            <icon type="success" size="20" color="#ea4451"></icon>
+            <icon type="success" size="20" :color="item.goods_buy?'#ea4451':'#ccc'"></icon>
           </view>
         </view>
-        <view class="goods">
-          <!-- 商品图片 -->
-          <image class="pic" src="http://static.botue.com/ugo/uploads/goods_2.jpg"></image>
-          <!-- 商品信息 -->
-          <view class="meta">
-            <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-            <view class="price">
-              <text>￥</text>1399<text>.00</text>
-            </view>
-            <!-- 加减 -->
-            <view class="amount">
-              <text class="reduce">-</text>
-              <input type="number" value="1" class="number">
-              <text class="plus">+</text>
-            </view>
-          </view>
-          <!-- 选框 -->
-          <view class="checkbox">
-            <icon type="success" size="20" color="#ea4451"></icon>
-          </view>
-        </view>
-        <view class="goods">
-          <!-- 商品图片 -->
-          <image class="pic" src="http://static.botue.com/ugo/uploads/goods_5.jpg"></image>
-          <!-- 商品信息 -->
-          <view class="meta">
-            <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-            <view class="price">
-              <text>￥</text>1399<text>.00</text>
-            </view>
-            <!-- 加减 -->
-            <view class="amount">
-              <text class="reduce">-</text>
-              <input type="number" value="1" class="number">
-              <text class="plus">+</text>
-            </view>
-          </view>
-          <!-- 选框 -->
-          <view class="checkbox">
-            <icon type="success" size="20" color="#ccc"></icon>
-          </view>
-        </view>
+
       </view>
     </view>
+
+
     <!-- 其它 -->
     <view class="extra">
       <label class="checkall">
@@ -91,11 +57,53 @@
       </view>
       <view class="pay">结算(3)</view>
     </view>
+
+
   </view>
 </template>
 
 <script>
   export default {
+    data(){
+      return {
+        list:null // 页面初始化数据
+      }
+    },
+
+    methods:{
+      // 数量的变化，的执行函数-------------------------------------
+      change(step,index){
+        // step:表示加减的数量  1 或者 -1
+        // index:商品的下标
+
+        // 1.前提是，需要判断，以防止数量为负数
+        // 数量减减时
+        if (step==-1&&this.list[index].goods_numb==1) {
+          return
+        }
+        // 数量加加时,数量最多不能超过15
+        if (step==1&&this.list[index].goods_numb==15) {
+          return 
+        }
+
+        // 2.点击加减按钮时，让数量随着step的变化而变化
+        this.list[index].goods_numb += step
+
+        // 3.将改变后的数量，重新存储到本地里
+        uni.setStorageSync("carts",this.list)
+      }
+    },
+
+    // 获取本地数据，只会执行一次,所以不适合在这里获取数据，应该在onShow 里获取
+    // onLoad():只会在页面加载的时候执行一次
+    // onLoad(){
+    //   console.log(uni.getStorageSync("carts").length)
+    // }
+
+    onShow(){
+      // 获取本地数据
+      this.list = uni.getStorageSync("carts") || []
+    }
     
   }
 </script>
