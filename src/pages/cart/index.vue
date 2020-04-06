@@ -132,9 +132,20 @@
         uni.setStorageSync("carts",this.list)
       },
 
-      // 全选 功能
+      // 全选 功能----------------------------------------------------------
       changeAll(){
-        
+        // 根据计算属性中 is 的值，进行判断
+        // this.is-->全选   !this.is-->全不选
+        // 点击之后， 把 !this.is 的值，赋值给 list 里面的每一个成员
+
+        var key = !this.is
+
+        this.list.forEach(item => {
+          item.goods_buy = key
+        })
+
+        // 将改变后的值，重新存储到本地里
+        uni.setStorageSync("carts",this.list)
       }
 
     },
