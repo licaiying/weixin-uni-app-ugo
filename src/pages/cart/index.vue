@@ -56,9 +56,9 @@
         全选
       </label>
       <view class="total">
-        合计: <text>￥</text><label>14110</label><text>.00</text>
+        合计: <text>￥</text><label>{{sum}}</label><text>.00</text>
       </view>
-      <view class="pay">结算(3)</view>
+      <view class="pay">结算({{ckList.length}})</view>
     </view>
 
 
@@ -74,11 +74,10 @@
     },
 
     computed:{
-      // 通过计算属性，来判断全选的状态
-
-      // 先将已经选中的商品，筛选提取出来,放到一个新数组里
-      // ckList：表示选中的商品的列表信息
       ckList(){
+        // 通过计算属性，来判断全选的状态
+        // 先将已经选中的商品，筛选提取出来,放到一个新数组里
+        // ckList：表示选中的商品的列表信息
         // 1.声明一个空数组
         var arr = []
 
@@ -96,6 +95,15 @@
       // 修改三元表达式额第一项参数
       is(){
         return this.ckList.length == this.list.length
+      },
+
+      // 计算商品总价
+      sum(){
+        var numb = 0
+        this.ckList.forEach(item => {
+          numb += item.goods_numb * item.goods_price
+        })
+        return numb
       }
     },
 
