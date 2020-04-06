@@ -1,16 +1,19 @@
 <template>
   <view class="wrapper">
 
-    <!-- 收货信息 -->
-    <view class="shipment">
+    <!-- 1.收货信息 -->
+    <view class="shipment" v-if="addr">
       <view class="dt">收货人: </view>
       <view class="dd meta">
-        <text class="name">刘德华</text>
-        <text class="phone">13535337057</text>
+        <text class="name">{{addr.userName}}</text>
+        <text class="phone">{{addr.telNumber}}</text>
       </view>
       <view class="dt">收货地址:</view>
-      <view class="dd">广东省广州市天河区一珠吉</view>
+      <view class="dd">{{addr.detailAddr}}</view>
     </view>
+
+    <!-- 2.如果没有数据，先显示一个按钮，获取收货地址 -->
+    <button type="primary" v-else @tap="getAddr">获取收货地址</button>
 
 
     <!-- 购物车 -->
@@ -69,7 +72,9 @@
   export default {
     data(){
       return {
-        list:null // 页面初始化数据
+        list:null, // 页面初始化数据
+
+        addr:null // 收货地址
       }
     },
 
@@ -154,6 +159,21 @@
 
         // 将改变后的值，重新存储到本地里
         uni.setStorageSync("carts",this.list)
+      },
+
+      // 获取收货地址的执行函数--------------------------------------------------
+      getAddr(){
+        // 调用API  wx.chooseAddress
+        // 因为现在使用uni-app框架，在做项目，所以都需将 wx. 更改为 uni.
+        uni.chooseAddress({
+          success:(res) => {
+            // console.log(res)
+            this.addr = res
+
+            // 对详细地址，做拼接
+            this.addr.detailAddr = res.provinceName + res.cityName + res.countyName + res.detailInfo
+          }
+        })
       }
 
     },
