@@ -36,9 +36,10 @@
               <text class="plus" @tap="change(1,index)">+</text>
             </view>
           </view>
+
           <!-- 选框 -->
           <view class="checkbox">
-            <icon type="success" size="20" :color="item.goods_buy?'#ea4451':'#ccc'"></icon>
+            <icon type="success" size="20" :color="item.goods_buy?'#ea4451':'#ccc'" @tap="change_buy(index)"></icon>
           </view>
         </view>
 
@@ -71,7 +72,7 @@
     },
 
     methods:{
-      // 数量的变化，的执行函数-------------------------------------
+      // 数量的变化，的执行函数------------------------------------------------
       change(step,index){
         // step:表示加减的数量  1 或者 -1
         // index:商品的下标
@@ -91,7 +92,20 @@
 
         // 3.将改变后的数量，重新存储到本地里
         uni.setStorageSync("carts",this.list)
-      }
+      },
+
+      // 单选 功能--------------------------------------------------------
+      change_buy(index){
+        // 点击时，改变其选中状态，取反 
+        // 1.根据goods_buy 进行取反判断
+        this.list[index].goods_buy = !this.list[index].goods_buy
+
+        // 2.状态改变后，重新存储到本地里
+        uni.setStorageSync("carts",this.list)
+      },
+
+      // 
+
     },
 
     // 获取本地数据，只会执行一次,所以不适合在这里获取数据，应该在onShow 里获取
