@@ -50,7 +50,9 @@
     <!-- 其它 -->
     <view class="extra">
       <label class="checkall">
-        <icon type="success" color="#ccc" size="20"></icon>
+        <!-- 小程序中，三元表达式的第一项不能写太复杂的数据，需要是一个变量 -->
+        <!-- <icon type="success" :color="ckList.lenght==list.length?'#ea4451':'#ccc'" size="20"></icon> -->
+        <icon type="success" :color="is?'#ea4451':'#ccc'" size="20" @tap="changeAll"></icon>
         全选
       </label>
       <view class="total">
@@ -68,6 +70,32 @@
     data(){
       return {
         list:null // 页面初始化数据
+      }
+    },
+
+    computed:{
+      // 通过计算属性，来判断全选的状态
+
+      // 先将已经选中的商品，筛选提取出来,放到一个新数组里
+      // ckList：表示选中的商品的列表信息
+      ckList(){
+        // 1.声明一个空数组
+        var arr = []
+
+        // 2.循环遍历所有的商品
+        this.list.forEach(item => {
+          if (item.goods_buy) {
+            arr.push(item)
+          }
+        })
+
+        // 将选中的商品数组，返回出去
+        return arr
+      },
+
+      // 修改三元表达式额第一项参数
+      is(){
+        return this.ckList.length == this.list.length
       }
     },
 
@@ -104,7 +132,10 @@
         uni.setStorageSync("carts",this.list)
       },
 
-      // 
+      // 全选 功能
+      changeAll(){
+        
+      }
 
     },
 
