@@ -80,7 +80,7 @@
         })
         // console.log(res)
 
-        this.list = res
+        this.list = res.message
       },
 
       // 去到查询结果的详情页面 ------------------------------------------------

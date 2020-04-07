@@ -89,7 +89,7 @@
         })
 
         // console.log(res)
-        this.swiperArr = res
+        this.swiperArr = res.message
        },
 
        // 获取 导航栏 数据------------------------------------------------------------------
@@ -99,7 +99,7 @@
          })
 
         //  console.log(res)
-         this.navArr = res
+         this.navArr = res.message
        },
 
        // 获取 楼层 数据------------------------------------------------------------------
@@ -108,7 +108,7 @@
            url:"/api/public/v1/home/floordata"
          })
 
-         this.floorsArr = res
+         this.floorsArr = res.message
        },
 
        // 返回顶部的执行函数---------------------------------------------------------------

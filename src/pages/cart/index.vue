@@ -72,7 +72,7 @@
   export default {
     data(){
       return {
-        list:null, // 页面初始化数据
+        list:[], // 页面初始化数据
 
         addr:null // 收货地址
       }
@@ -177,7 +177,7 @@
       },
 
       // 结算功能-----------------------------------------------------------------
-      goPay(){
+      async goPay(){
         // 点击的时候，做判断
         // 1. 是否有收获地址
         if (!this.addr) {
@@ -201,7 +201,33 @@
             url:"/pages/auth/index"
           })
         }
+
+        // 4.创建订单
+        const res = await this.request({
+          url:"/api/public/v1/my/orders/create",
+          header:{
+            "Authorization" : uni.getStorageSync("token")
+          },
+          methods:"POST",
+          data:{
+             order_price:this.sum,
+             consignee_addr:this.addr.detailAddr,
+             goods:this.ckList
+          }
+        })
  
+        // console.log(res) // {message: null, meta: {msg: "无效token", status: 401}}
+
+        // 5.若订单创建成功
+        if (res.meta.status==200) {
+          // 清空购物车
+          uni.removeStorageSync("carts")
+
+          // 转跳到 订单详情页 非tabBar页面
+          uni.navigateTo({
+            url:"/pages/order/index"
+          })
+        }
       }
 
     },

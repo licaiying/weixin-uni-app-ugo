@@ -33,7 +33,7 @@ export default {
     // 获取 Token 的方法--------------------------------------------------
     async getToken(data) {
       // 1.data 是 形参，是上诉方法中【apiGetInfo() , btnGetInfo() 】，获取到的用户信息
-      console.log(data)
+      // console.log(data)
 
       // 2. code数据，使用API获取
       const [err, codeObj] = await uni.login();
@@ -66,10 +66,10 @@ export default {
       //       大家不是我们的开发人员，没有权限；
 
       // 4.获取到token 存储到本地
-      // uni.setStorageSync("token",res.token)
+      uni.setStorageSync("token",res.message.token)
 
       // 5.返回到上一页
-      // uni.navigateBack()
+      uni.navigateBack()
     }
   },
 

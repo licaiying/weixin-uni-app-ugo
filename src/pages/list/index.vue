@@ -57,10 +57,10 @@
         })
 
         // console.log(res)
-        // this.list = res.goods
+        // this.list = res.message.goods
 
         // 优化，将新获得的数据与原先的数据做一个连接操作，而不是直接覆盖原先的数据
-        this.list = this.list.concat(res.goods)
+        this.list = this.list.concat(res.message.goods)
       },
 
       // 页面到达底部时，重新调用函数，发请求，获取下一页的数据信息

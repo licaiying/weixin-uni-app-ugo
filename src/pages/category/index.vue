@@ -66,7 +66,7 @@
         })
 
         // console.log(res)
-        this.list = res
+        this.list = res.message
       },
 
       // 当点击 一级分类 的时候，获取对应的索引值------------------------------------
