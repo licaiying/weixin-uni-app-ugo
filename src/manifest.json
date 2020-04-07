@@ -1,6 +1,6 @@
 {
 	"name": "黑马优购",
-	"appid": "",
+	"appid": "wx0c1c87fe2621e436",
 	"description": "小程序电商!",
 	"versionName": "1.0.0",
 	"versionCode": "100",
@@ -54,7 +54,7 @@
 
 	},
 	"mp-weixin": { /* 微信小程序特有相关 */
-		"appid": "",
+		"appid": "wx0c1c87fe2621e436",
 		"setting": {
 			"urlCheck": false
 		},

@@ -66,7 +66,8 @@ export default {
       //       大家不是我们的开发人员，没有权限；
 
       // 4.获取到token 存储到本地
-      uni.setStorageSync("token",res.message.token)
+      // uni.setStorageSync("token",res.message.token)
+      uni.setStorageSync("token","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIyLCJpYXQiOjE1ODYyNTAyOTUsImV4cCI6MTAwMTU4NjI1MDI5NH0.xpK-y1FU0GvGz7UyAeoWiANFfWoSr1ZkEwfSqMS415g")
 
       // 5.返回到上一页
       uni.navigateBack()

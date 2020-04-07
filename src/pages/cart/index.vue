@@ -167,7 +167,7 @@
         // 因为现在使用uni-app框架，在做项目，所以都需将 wx. 更改为 uni.
         uni.chooseAddress({
           success:(res) => {
-            // console.log(res)
+            console.log(res)
             this.addr = res
 
             // 对详细地址，做拼接
