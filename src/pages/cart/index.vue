@@ -35,7 +35,7 @@
             <!-- 加减 -->
             <view class="amount">
               <text class="reduce" @tap="change(-1,index)">-</text>
-              <input type="number" :value="item.goods_numb" class="number">
+              <input type="number" :value="item.goods_number" class="number">
               <text class="plus" @tap="change(1,index)">+</text>
             </view>
           </view>
@@ -104,11 +104,11 @@
 
       // 计算商品总价
       sum(){
-        var numb = 0
+        var sum = 0
         this.ckList.forEach(item => {
-          numb += item.goods_numb * item.goods_price
+          sum += item.goods_number * item.goods_price
         })
-        return numb
+        return sum
       }
     },
 
@@ -120,16 +120,16 @@
 
         // 1.前提是，需要判断，以防止数量为负数
         // 数量减减时
-        if (step==-1&&this.list[index].goods_numb==1) {
+        if (step==-1&&this.list[index].goods_number==1) {
           return
         }
         // 数量加加时,数量最多不能超过15
-        if (step==1&&this.list[index].goods_numb==15) {
+        if (step==1&&this.list[index].goods_number==15) {
           return 
         }
 
         // 2.点击加减按钮时，让数量随着step的变化而变化
-        this.list[index].goods_numb += step
+        this.list[index].goods_number += step
 
         // 3.将改变后的数量，重新存储到本地里
         uni.setStorageSync("carts",this.list)

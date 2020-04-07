@@ -18,7 +18,7 @@
 
     <!-- 导航条 -->
     <view class="navs">
-      <navigator open-type="switchTab" url="/pages/category/index" v-for="item in navArr" :key="item.name">
+      <navigator open-type="switchTab" :url="'/pages/category/index?query='+item.image_src" v-for="item in navArr" :key="item.name">
         <image :src="item.image_src"></image>
       </navigator>
     </view>
@@ -34,7 +34,7 @@
 
         <!-- 楼层的 图片区域 -->
         <view class="items">
-          <navigator url="/pages/list/index" v-for="img in item.product_list" :key="img.name">
+          <navigator :url="'/pages/list/index?query='+img.image_src" v-for="img in item.product_list" :key="img.name">
             <image :src="img.image_src"></image>
           </navigator>
         </view>

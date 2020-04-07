@@ -67,7 +67,7 @@
         })
 
         // console.log(res)
-        this.data = res
+        this.data = res.message
       },
 
       // 向购物车添加商品的执行函数-----------------------------------
@@ -77,7 +77,7 @@
           goods_id:this.data.goods_id, 
           goods_name:this.data.goods_name,
           goods_small_logo:this.data.goods_small_logo,
-          goods_numb:1, // 商品的数量，默认为1
+          goods_number:1, // 商品的数量，默认为1
           goods_price:this.data.goods_price,
           goods_buy:true // true：表示要购买的状态
         }
@@ -92,7 +92,7 @@
           if (this.carts[i].goods_id == one.goods_id) {
             key = "已重复"
             // 就让这个商品的数量加1
-            this.carts[i].goods_numb++
+            this.carts[i].goods_number++
             break
           }
         }
